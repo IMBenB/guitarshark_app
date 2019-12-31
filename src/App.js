@@ -39,41 +39,45 @@ class App extends Component {
       })
       console.log(position)
     },
-     () => {
-      console.log('no location')
-      fetch('https://ipapi.co/json')
-        .then(res => res.json())
-        .then(location => {
-          console.log(location);
-          this.setState({
-            location: {
-              lat: location.latitude,
-              lng: location.longitude
-            },
-            haveUserLocation: true,
-            zoom: 15,
+      () => {
+        console.log('no location')
+        fetch('https://ipapi.co/json')
+          .then(res => res.json())
+          .then(location => {
+            console.log(location);
+            this.setState({
+              location: {
+                lat: location.latitude,
+                lng: location.longitude
+              },
+              haveUserLocation: true,
+              zoom: 15,
 
+            })
           })
-        })
-      // alert('please confirm your location')
-    }
+        // alert('please confirm your location')
+      }
     );
   }
 
   counterAndLocation = () => {
     // this.setState({ counter: this.state.counter + 1 })
-    
+
     navigator.geolocation.getCurrentPosition((position) => {
       this.setState({
+        counter: this.state.counter + 1,
         location: {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         },
         haveUserLocation: true,
-        zoom: 15,
-        counter: this.state.counter + 1
+        zoom: 15
+
       })
-      console.log(position)
+      // console.log(position)
+      console.log(`lat: ${this.state.location.lat}`)
+      console.log(`lng: ${this.state.location.lng}`)
+    
     });
   }
 
@@ -92,7 +96,7 @@ class App extends Component {
                 position={position}
                 icon={myIcon}>
                 <Popup>
-                  A pretty CSS3 popup. <br /> Easily customizable.
+                  you start here
          </Popup>
               </Marker> : ''
           }
