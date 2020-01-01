@@ -13,7 +13,7 @@
   "author": "CJ R. <cj@null.computer> (https://w3cj.now.sh)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/w3cj/express-api-starter.git"
+    "url": "git+https://github.com/w3cj/express-api-starter.git"
   },
   "license": "MIT",
   "dependencies": {
@@ -33,5 +33,12 @@
     "mocha": "^5.2.0",
     "nodemon": "^1.18.9",
     "supertest": "^3.3.0"
+  },
+  "bugs": {
+    "url": "https://github.com/w3cj/express-api-starter/issues"
+  },
+  "homepage": "https://github.com/w3cj/express-api-starter#readme",
+  "directories": {
+    "test": "test"
   }
 }
