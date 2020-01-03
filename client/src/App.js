@@ -60,8 +60,9 @@ class App extends Component {
     );
   }
 
-  counterAndLocation = () => {
+  counterAndLocation = (e) => {
     // this.setState({ counter: this.state.counter + 1 })
+    // e.preventDefault();
 
     navigator.geolocation.getCurrentPosition((position) => {
       this.setState({
@@ -77,19 +78,30 @@ class App extends Component {
       // console.log(position)
       console.log(`lat: ${this.state.location.lat}`)
       console.log(`lng: ${this.state.location.lng}`)
-    
+
     });
     let data = {
       latitude: this.state.location.lat,
       longitude: this.state.location.lng
-  };
-    fetch('/addData', {
-      method: 'POST', // or 'PUT'
+    };
+    fetch('http://localhost:5000/addData', {
+      method: 'POST',
       body: JSON.stringify(data), // data can be `string` or {object}!
       headers: {
-          'Content-Type': 'application/json'
+        'Content-Type': 'application/json'
       }
-  })
+    })
+    .then(res => {res.json()
+        .then(resJson => {
+          console.dir(resJson)
+            console.log('ben')
+            
+        })
+    }).catch(err => {
+        console.error(err)
+    })
+
+
   }
 
   render() {

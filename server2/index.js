@@ -28,15 +28,16 @@ const userSampleSchema = new Schema({
     longitude: Number
 });
 
-// app.post('/addData', (req, res) => {
-    
+app.post('/addData', (req, res) => {
+    console.log('ben')
     let name = 'ben';
-    let latitude = 32;
-    let longitude = 55;
+    let latitude = req.body['latitude']
+    let longitude = req.body['longitude']
+    console.log(req.body['longitude'])
     mongoose.connect(url, { useNewUrlParser: true });
     mongoose.set('useUnifiedTopology', true);
 
-   
+
     const samplesModel = mongoose.model('guitar samples', userSampleSchema);
 
     const sampleDetails = new samplesModel({ name: `${name}`, latitude: `${latitude}`, longitude: `${longitude}` });
@@ -44,11 +45,18 @@ const userSampleSchema = new Schema({
 
     sampleDetails.save().then(doc => {
         console.log(doc);
-    }).catch(err => {
+    })
+    samplesModel.find({ samplesModel })
+        .then(doc => {
+            console.log(doc);
+            res.send(doc);
+        })
+    
+    .catch(err => {
         console.log(err)
     });
-    //
-// });
+
+});
 
 // app.post('/findData', (req, res) => {
 //     console.log(req.body['data'])
@@ -70,7 +78,7 @@ const userSampleSchema = new Schema({
 
 
 // })
-let port = process.env.PORT || 52;
+let port = process.env.PORT || 5000;
 
 app.listen(port, function () {
     console.log('we on', port)
