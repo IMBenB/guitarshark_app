@@ -12,7 +12,7 @@ app.use(cors());
 
 
 
-const url = "mongodb+srv://IMBB:ZT4smQXxK6zRu3pW@cluster0-zxnkf.mongodb.net/test?retryWrites=true&w=majority"
+const url = "mongodb+srv://IMBB:ZT4smQXxK6zRu3pW@cluster0-zxnkf.mongodb.net/sharks"
 
 const db = mongoose.connection;
 
@@ -28,18 +28,18 @@ const userSampleSchema = new Schema({
     longitude: Number
 });
 
-app.post('/addData', (req, res) => {
+// app.post('/addData', (req, res) => {
     
     let name = 'ben';
     let latitude = 32;
-    let longitude = 34;
+    let longitude = 55;
     mongoose.connect(url, { useNewUrlParser: true });
     mongoose.set('useUnifiedTopology', true);
 
    
-    const sampleModel = mongoose.model('sample', userSampleSchema);
+    const samplesModel = mongoose.model('guitar samples', userSampleSchema);
 
-    const sampleDetails = new sampleModel({ name: `${name}`, latitude: `${latitude}`, longitude: `${longitude}` });
+    const sampleDetails = new samplesModel({ name: `${name}`, latitude: `${latitude}`, longitude: `${longitude}` });
 
 
     sampleDetails.save().then(doc => {
@@ -48,7 +48,7 @@ app.post('/addData', (req, res) => {
         console.log(err)
     });
     //
-});
+// });
 
 // app.post('/findData', (req, res) => {
 //     console.log(req.body['data'])
@@ -75,3 +75,4 @@ let port = process.env.PORT || 52;
 app.listen(port, function () {
     console.log('we on', port)
 })
+//nodemon
