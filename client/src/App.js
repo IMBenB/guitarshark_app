@@ -24,10 +24,41 @@ class App extends Component {
     },
     haveUserLocation: false,
     zoom: 2,
-    counter: 0
+    counter: 0,
+    samplePosition: {
+      sampleLat: [],
+      sampleLng: []
+    }
   }
 
   componentDidMount() {
+    fetch('http://localhost:5000/addData', {
+      method: 'POST',
+      body: JSON.stringify(), // data can be `string` or {object}!
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(resJson => {
+
+        this.setState({
+          samplePosition: {
+            sampleLat: resJson[0].latitude,
+            sampleLng: resJson[0].longitude
+          }
+
+          // })
+
+        })
+
+
+      }).catch(err => {
+        console.error(err)
+      })
+
+
+
     navigator.geolocation.getCurrentPosition((position) => {
       this.setState({
         location: {
@@ -72,7 +103,8 @@ class App extends Component {
           lng: position.coords.longitude
         },
         haveUserLocation: true,
-        zoom: 15
+        zoom: 15,
+
 
       })
       // console.log(position)
@@ -91,21 +123,29 @@ class App extends Component {
         'Content-Type': 'application/json'
       }
     })
-    .then(res => {res.json()
-        .then(resJson => {
-          console.dir(resJson)
+      .then(res => {
+        res.json()
+          .then(resJson => {
+            console.dir(resJson)
             console.log('ben')
-            
-        })
-    }).catch(err => {
+            console.log(resJson[0].latitude)
+            console.log(resJson[0].longitude)
+            // this.setState({samplePosition:{sampleLat : resJson[0].latitude,
+            // sampleLng:resJson[0].longitude}
+
+            // })
+
+          })
+      }).catch(err => {
         console.error(err)
-    })
+      })
 
 
   }
 
   render() {
     const position = [this.state.location.lat, this.state.location.lng];
+    const position2 =[32,this.state.samplePosition.sampleLng] //why the latitude doesnt work???????
     return (
       <div className="map" >
         <Map className="map" center={position} zoom={this.state.zoom}>
@@ -123,6 +163,16 @@ class App extends Component {
          </Popup>
               </Marker> : ''
           }
+          {
+            <Marker
+              position={position2}
+              icon={myIcon}>
+              <Popup>
+                you start here
+     </Popup>
+            </Marker>
+          }
+
 
         </Map>
         <div className="box"  >

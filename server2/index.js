@@ -44,40 +44,40 @@ app.post('/addData', (req, res) => {
 
 
     sampleDetails.save().then(doc => {
-        console.log(doc);
+        console.log('saved doc 1');
+
+        samplesModel.find({})
+            .then(doc => {
+
+                res.send(doc)
+            }).catch(err => {
+                console.log(err)
+                reject(err)
+            });
+    }).catch(err => {
+        console.log(err);
+        reject(err)
     })
-    samplesModel.find({ samplesModel })
-        .then(doc => {
-            console.log(doc);
-            res.send(doc);
-        })
+
     
-    .catch(err => {
-        console.log(err)
-    });
+
+    // sampleDetails.save().then(doc => {
+    //     console.log(doc);
+    // })
+    // samplesModel.find({ samplesModel })
+    //     .then(doc => {
+    //         console.log(doc);
+    //         res.send(doc);
+    //     })
+
+    // .catch(err => {
+    //     console.log(err)
+    // });
 
 });
 
-// app.post('/findData', (req, res) => {
-//     console.log(req.body['data'])
-//     let nameToFind = req.body['data'];
-//     mongoose.connect(url, { useNewUrlParser: true });
-//     mongoose.set('useUnifiedTopology', true);
-
-//     const phoneBookModel = mongoose.model('phoneBook', phoneBookSchema);
-
-//     phoneBookModel.find({ name: `${nameToFind}` })
-//         .then(doc => {
-//             console.log(doc);
-//             res.send(doc);
-//         })
-//         .catch(err => {
-//             console.log(err)
-//         })
 
 
-
-// })
 let port = process.env.PORT || 5000;
 
 app.listen(port, function () {
