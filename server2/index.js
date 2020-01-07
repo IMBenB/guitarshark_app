@@ -77,6 +77,27 @@ app.post('/addData', (req, res) => {
 });
 
 
+app.post('/getData', (req, res) => {
+    
+    mongoose.connect(url, { useNewUrlParser: true });
+    mongoose.set('useUnifiedTopology', true);
+
+    const samplesModel = mongoose.model('guitar samples', userSampleSchema);
+    
+
+    samplesModel.find({ })
+        .then(doc => {
+            console.log(doc);
+            res.send(doc);
+        })
+        .catch(err => {
+            console.log(err)
+        })
+
+
+
+})
+
 
 let port = process.env.PORT || 5000;
 
