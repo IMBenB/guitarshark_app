@@ -25,17 +25,21 @@ const sampleIcon = L.icon({
 });
 
 class App extends Component {
-  state = {
-    location: {
-      lat: 32.30,
-      lng: 34.85,
-    },
-    haveUserLocation: false,
-    zoom: 2,
-    counter: 0,
-    samplePosition: {
-      sampleLat: [],
-      sampleLng: []
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      location: {
+        lat: 32.30,
+        lng: 34.85,
+      },
+      haveUserLocation: false,
+      zoom: 2,
+      counter: 0,
+      samplePosition: {
+        sampleLat: 0,
+        sampleLng: 0
+      }
     }
   }
 
@@ -49,11 +53,11 @@ class App extends Component {
     })
       .then(res => res.json())
       .then(resJson => {
-
+        console.log(resJson[100].latitude)
         this.setState({
           samplePosition: {
-            sampleLat: resJson[100].latitude,
-            sampleLng: resJson[100].longitude
+            sampleLat: resJson[0].latitude,
+            sampleLng: resJson[0].longitude
           }
 
           // })
@@ -74,7 +78,7 @@ class App extends Component {
           lng: position.coords.longitude
         },
         haveUserLocation: true,
-        zoom: 15
+        zoom: 10
       })
       console.log(position)
     },
@@ -90,7 +94,7 @@ class App extends Component {
                 lng: location.longitude
               },
               haveUserLocation: true,
-              zoom: 15,
+              zoom: 10,
 
             })
           })
@@ -111,7 +115,7 @@ class App extends Component {
           lng: position.coords.longitude
         },
         haveUserLocation: true,
-        zoom: 15,
+        zoom: 10,
 
 
       })
@@ -136,8 +140,8 @@ class App extends Component {
           .then(resJson => {
             console.dir(resJson)
             console.log('ben')
-            console.log(resJson[100].latitude)
-            console.log(resJson[100].longitude)
+            console.log(resJson[0].latitude)
+            console.log(resJson[0].longitude)
             // this.setState({samplePosition:{sampleLat : resJson[0].latitude,
             // sampleLng:resJson[0].longitude}
 
@@ -153,13 +157,13 @@ class App extends Component {
   }
 
   render() {
-    const x = this.state.samplePosition.sampleLat;
-    
+    const x = 32.1788378;
+
     const position = [this.state.location.lat, this.state.location.lng];
-    const position2 = [32.1788378,this.state.samplePosition.sampleLng] //why the latitude doesnt work??????? this.state.samplePosition.sampleLat what is value? try get not post at didMount
+    const position2 = [this.state.samplePosition.sampleLat,this.state.samplePosition.sampleLng] //why the latitude doesnt work??????? this.state.samplePosition.sampleLat what is value? try get not post at didMount
     return (
       <div className="map" >
-        <Map className="map" center={position} zoom={this.state.zoom}>
+        <Map className="map" center={[this.state.location.lat, this.state.location.lng]} zoom={this.state.zoom}>
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
