@@ -25,10 +25,11 @@ const sampleIcon = L.icon({
 });
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+  // constructor(props) { //props crush my web????why???
+  //   super(props);
 
-    this.state = {
+  //   this.
+    state = {
       location: {
         lat: 32.30,
         lng: 34.85,
@@ -41,7 +42,7 @@ class App extends Component {
         sampleLng: 0
       }
     }
-  }
+  // }
 
   componentDidMount() {
     fetch('http://localhost:5000/getData', {
@@ -52,12 +53,12 @@ class App extends Component {
       }
     })
       .then(res => res.json())
-      .then(resJson => {
-        console.log(resJson[100].latitude)
+      .then(samples => {
+       
         this.setState({
           samplePosition: {
-            sampleLat: resJson[0].latitude,
-            sampleLng: resJson[0].longitude
+            sampleLat: samples[0].latitude,
+            sampleLng: samples[0].longitude
           }
 
           // })
@@ -140,8 +141,8 @@ class App extends Component {
           .then(resJson => {
             console.dir(resJson)
             console.log('ben')
-            console.log(resJson[0].latitude)
-            console.log(resJson[0].longitude)
+            console.log(resJson[10].latitude)
+            console.log(resJson[10].longitude)
             // this.setState({samplePosition:{sampleLat : resJson[0].latitude,
             // sampleLng:resJson[0].longitude}
 
@@ -160,7 +161,7 @@ class App extends Component {
     const x = 32.1788378;
 
     const position = [this.state.location.lat, this.state.location.lng];
-    const position2 = [this.state.samplePosition.sampleLat,this.state.samplePosition.sampleLng] //why the latitude doesnt work??????? this.state.samplePosition.sampleLat what is value? try get not post at didMount
+    const position2 = [this.state.samplePosition.sampleLat,this.state.samplePosition.sampleLng] 
     return (
       <div className="map" >
         <Map className="map" center={[this.state.location.lat, this.state.location.lng]} zoom={this.state.zoom}>
