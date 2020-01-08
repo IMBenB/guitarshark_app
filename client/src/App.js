@@ -25,11 +25,11 @@ const sampleIcon = L.icon({
 });
 
 class App extends Component {
-  // constructor(props) { //props crush my web????why???
-  //   super(props);
+  constructor(props) { //props crush my web????why???
+    super(props);
 
-  //   this.
-    state = {
+    this.
+      state = {
       location: {
         lat: 32.30,
         lng: 34.85,
@@ -37,12 +37,9 @@ class App extends Component {
       haveUserLocation: false,
       zoom: 2,
       counter: 0,
-      samplePosition: {
-        sampleLat: 0,
-        sampleLng: 0
-      }
+      samplePosition: []
     }
-  // }
+  }
 
   componentDidMount() {
     fetch('http://localhost:5000/getData', {
@@ -53,17 +50,15 @@ class App extends Component {
       }
     })
       .then(res => res.json())
-      .then(samples => {
-       
-        this.setState({
-          samplePosition: {
-            sampleLat: samples[0].latitude,
-            sampleLng: samples[0].longitude
-          }
+      .then(samplePosition => {
 
+        this.setState({
+          samplePosition
           // })
 
         })
+        console.log('bbb')
+        console.dir(samplePosition);
 
 
       }).catch(err => {
@@ -139,7 +134,7 @@ class App extends Component {
       .then(res => {
         res.json()
           .then(resJson => {
-            console.dir(resJson)
+            // console.dir(resJson)
             console.log('ben')
             console.log(resJson[10].latitude)
             console.log(resJson[10].longitude)
@@ -158,10 +153,10 @@ class App extends Component {
   }
 
   render() {
-    const x = 32.1788378;
+
 
     const position = [this.state.location.lat, this.state.location.lng];
-    const position2 = [this.state.samplePosition.sampleLat,this.state.samplePosition.sampleLng] 
+    const position2 = [32.111, 35.1111]
     return (
       <div className="map" >
         <Map className="map" center={[this.state.location.lat, this.state.location.lng]} zoom={this.state.zoom}>
@@ -179,16 +174,27 @@ class App extends Component {
          </Popup>
               </Marker> : ''
           }
-          {
+          {/* {this.state.samplePosition.map(sample =>{
             <Marker
-              position={position2}
+              position={sample.latitude,sample.longitude}
               icon={sampleIcon}>
               <Popup>
                 {this.state.samplePosition.sampleLat}
               </Popup>
             </Marker>
+          })
+            
+          } */}
+          {
+            <Marker
+              position={position2}
+              icon={sampleIcon}>
+              <Popup>
+                {this.state.samplePosition.latitude}
+                {console.log(this.state.samplePosition[0])}
+              </Popup>
+            </Marker>
           }
-
 
         </Map>
         <div className="box"  >
