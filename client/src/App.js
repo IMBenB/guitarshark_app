@@ -28,13 +28,13 @@ class App extends Component {
   constructor(props) { //props crush my web????why???
     super(props);
 
-    this.
-      state = {
+    this.state = {
       location: {
         lat: 32.30,
         lng: 34.85,
       },
       haveUserLocation: false,
+      canSample: false,
       zoom: 2,
       counter: 0,
       samplePosition: []
@@ -58,7 +58,7 @@ class App extends Component {
 
         })
         console.log('bbb')
-        console.dir(samplePosition);
+        // console.dir(samplePosition);
 
 
       }).catch(err => {
@@ -98,7 +98,9 @@ class App extends Component {
       }
     );
   }
-
+  startSample =(e) =>{
+    this.setState({canSample:true})
+  }
   counterAndLocation = (e) => {
     // this.setState({ counter: this.state.counter + 1 })
     // e.preventDefault();
@@ -185,15 +187,20 @@ class App extends Component {
           })
             
           } */}
-          {
+          {this.state.canSample?
+          this.state.samplePosition.map(sample =>{
+            return(
             <Marker
-              position={position2}
+              position={[sample.latitude,sample.longitude]}
               icon={sampleIcon}>
+                {console.log('a')}
               <Popup>
-                {this.state.samplePosition.latitude}
-                {console.log(this.state.samplePosition[0])}
+               
+                {console.log(this.state.samplePosition[0].latitude)}
+                {console.dir(this.state.samplePosition.length)}
+           
               </Popup>
-            </Marker>
+          </Marker>)}) : console.log('fail')
           }
 
         </Map>
@@ -201,6 +208,7 @@ class App extends Component {
           <h1> <Badge color="secondary">{this.state.counter}</Badge></h1>
         </div>
         <Button className='button' color="primary" onClick={this.counterAndLocation}>FISH</Button>{' '}
+        <Button className='playButton' color="primary" onClick={this.startSample}>play</Button>{' '}
 
       </div>
 

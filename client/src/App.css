@@ -21,6 +21,19 @@ body{
   width: 80px;
   
 }
+
+.playButton{
+  position: absolute;
+  top:20px;
+  left:20px;
+  /* z-index: 1; */
+  border-radius: 50%;
+  height: 80px;
+  width: 80px;
+  
+}
+
+
 .box{
   
   height: 100px;
