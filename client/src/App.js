@@ -51,12 +51,16 @@ class App extends Component {
     })
       .then(res => res.json())
       .then(samplePosition => {
+        if (samplePosition.isOK) {
+          this.setState({
+            samplePosition: samplePosition.doc
+            // })
 
-        this.setState({
-          samplePosition
-          // })
+          })
+        } else {
+          console.dir(samplePosition.error)
+        }
 
-        })
         console.log('bbb')
         // console.dir(samplePosition);
 
@@ -74,7 +78,7 @@ class App extends Component {
           lng: position.coords.longitude
         },
         haveUserLocation: true,
-        zoom: 10
+        zoom: 15
       })
       console.log(position)
     },
@@ -90,7 +94,7 @@ class App extends Component {
                 lng: location.longitude
               },
               haveUserLocation: true,
-              zoom: 10,
+              zoom: 15,
 
             })
           })
@@ -98,8 +102,8 @@ class App extends Component {
       }
     );
   }
-  startSample =(e) =>{
-    this.setState({canSample:true})
+  startSample = (e) => {
+    this.setState({ canSample: true })
   }
   counterAndLocation = (e) => {
     // this.setState({ counter: this.state.counter + 1 })
@@ -113,7 +117,7 @@ class App extends Component {
           lng: position.coords.longitude
         },
         haveUserLocation: true,
-        zoom: 10,
+        zoom: 15,
 
 
       })
@@ -158,7 +162,7 @@ class App extends Component {
 
 
     const position = [this.state.location.lat, this.state.location.lng];
-    const position2 = [32.111, 35.1111]
+    // const position2 = [32.111, 35.1111]
     return (
       <div className="map" >
         <Map className="map" center={[this.state.location.lat, this.state.location.lng]} zoom={this.state.zoom}>
@@ -187,20 +191,22 @@ class App extends Component {
           })
             
           } */}
-          {this.state.canSample?
-          this.state.samplePosition.map(sample =>{
-            return(
-            <Marker
-              position={[sample.latitude,sample.longitude]}
-              icon={sampleIcon}>
-                {console.log('a')}
-              <Popup>
-               
-                {console.log(this.state.samplePosition[0].latitude)}
-                {console.dir(this.state.samplePosition.length)}
-           
-              </Popup>
-          </Marker>)}) : console.log('fail')
+          {this.state.canSample ?
+            this.state.samplePosition.map(sample => {
+              return (
+
+                <Marker
+                  key={sample._id}
+                  position={[sample.latitude, sample.longitude]}
+                  icon={sampleIcon}>
+                  {console.log('a')}
+                  <Popup>
+
+
+                    {sample._id}
+                  </Popup>
+                </Marker>)
+            }) : console.log('fail')
           }
 
         </Map>

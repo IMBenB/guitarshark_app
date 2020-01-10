@@ -59,7 +59,7 @@ app.post('/addData', (req, res) => {
         reject(err)
     })
 
-    
+
 
     // sampleDetails.save().then(doc => {
     //     console.log(doc);
@@ -78,22 +78,26 @@ app.post('/addData', (req, res) => {
 
 
 app.post('/getData', (req, res) => {
-    
-    mongoose.connect(url, { useNewUrlParser: true });
-    mongoose.set('useUnifiedTopology', true);
 
-    const samplesModel = mongoose.model('guitar samples', userSampleSchema);
-    
+    try {
 
-    samplesModel.find({ })
-        .then(doc => {
-            console.log(doc);
-            res.send(doc);
-        })
-        .catch(err => {
-            console.log(err)
-        })
+        mongoose.connect(url, { useNewUrlParser: true });
+        mongoose.set('useUnifiedTopology', true);
 
+        const samplesModel = mongoose.model('guitar samples', userSampleSchema);
+
+
+        samplesModel.find({})
+            .then(doc => {
+                console.log(doc);
+                let docObj ={ doc, isOK:true};
+                res.send(docObj);
+            })
+            
+    } catch (err) {
+        res.send({isOK:false, error:err})
+        console.log(err)
+    }
 
 
 })
