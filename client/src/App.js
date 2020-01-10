@@ -143,8 +143,9 @@ class App extends Component {
         .then(res => {
           res.json()
             .then(resJson => {
-              // console.dir(resJson)
+              
               console.log('ben')
+              console.dir(resJson)
               // console.log(resJson[10].latitude)
               // console.log(resJson[10].longitude)
               // this.setState({samplePosition:{sampleLat : resJson[0].latitude,
@@ -187,7 +188,8 @@ class App extends Component {
               </Marker> : ''
           }
 
-          {this.state.canSample ?
+          {
+          // this.state.canSample ?
             this.state.samplePosition.map(sample => {
               return (
 
@@ -202,7 +204,8 @@ class App extends Component {
                     {sample._id}
                   </Popup>
                 </Marker>)
-            }) : console.log('fail')
+            }) 
+            // : console.log('fail')
           }
 
         </Map>
