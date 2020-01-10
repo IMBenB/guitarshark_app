@@ -25,13 +25,13 @@ const sampleIcon = L.icon({
 });
 
 class App extends Component {
-  constructor(props) { //props crush my web????why???
+  constructor(props) {
     super(props);
 
     this.state = {
       location: {
-        lat: 32.30,
-        lng: 34.85,
+        lat: "",
+        lng: "",
       },
       haveUserLocation: false,
       canSample: false,
@@ -70,92 +70,98 @@ class App extends Component {
       })
 
 
+    if (this.state.location.lat === "") {
+      navigator.geolocation.getCurrentPosition((position) => {
 
-    navigator.geolocation.getCurrentPosition((position) => {
-      this.setState({
-        location: {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        },
-        haveUserLocation: true,
-        zoom: 15
-      })
-      console.log(position)
-    },
-      () => {
-        console.log('no location')
-        fetch('https://ipapi.co/json')
-          .then(res => res.json())
-          .then(location => {
-            console.log(location);
-            this.setState({
-              location: {
-                lat: location.latitude,
-                lng: location.longitude
-              },
-              haveUserLocation: true,
-              zoom: 15,
+        this.setState({
+          location: {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          },
+          haveUserLocation: true,
+          zoom: 15
+        })
+        console.log(position)
+      },
+        () => {
+          console.log('no location')
+          fetch('https://ipapi.co/json')
+            .then(res => res.json())
+            .then(location => {
+              console.log(location);
+              this.setState({
+                location: {
+                  lat: location.latitude,
+                  lng: location.longitude
+                },
+                haveUserLocation: true,
+                zoom: 15,
 
+              })
             })
-          })
-        // alert('please confirm your location')
-      }
-    );
+          // alert('please confirm your location')
+        }
+      )
+    };//
   }
   startSample = (e) => {
-    this.setState({ canSample: true })
+    this.setState({ canSample: !this.state.canSample })
+    console.log(this.state.canSample)
   }
   counterAndLocation = (e) => {
     // this.setState({ counter: this.state.counter + 1 })
     // e.preventDefault();
+    if (this.state.canSample) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        this.setState({
+          counter: this.state.counter + 1,
+          location: {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          },
+          haveUserLocation: true,
+          zoom: 15,
 
-    navigator.geolocation.getCurrentPosition((position) => {
+
+        })
+        // console.log(position)
+        console.log(`lat: ${this.state.location.lat}`)
+        console.log(`lng: ${this.state.location.lng}`)
+
+      });
+      let data = {
+        latitude: this.state.location.lat,
+        longitude: this.state.location.lng
+      };
+      fetch('http://localhost:5000/addData', {
+        method: 'POST',
+        body: JSON.stringify(data), // data can be `string` or {object}!
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(res => {
+          res.json()
+            .then(resJson => {
+              // console.dir(resJson)
+              console.log('ben')
+              // console.log(resJson[10].latitude)
+              // console.log(resJson[10].longitude)
+              // this.setState({samplePosition:{sampleLat : resJson[0].latitude,
+              // sampleLng:resJson[0].longitude}
+
+              // })
+
+            })
+        }).catch(err => {
+          console.error(err)
+        })
+
+    } else {
       this.setState({
-        counter: this.state.counter + 1,
-        location: {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        },
-        haveUserLocation: true,
-        zoom: 15,
-
-
+        counter: 0
       })
-      // console.log(position)
-      console.log(`lat: ${this.state.location.lat}`)
-      console.log(`lng: ${this.state.location.lng}`)
-
-    });
-    let data = {
-      latitude: this.state.location.lat,
-      longitude: this.state.location.lng
-    };
-    fetch('http://localhost:5000/addData', {
-      method: 'POST',
-      body: JSON.stringify(data), // data can be `string` or {object}!
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => {
-        res.json()
-          .then(resJson => {
-            // console.dir(resJson)
-            console.log('ben')
-            console.log(resJson[10].latitude)
-            console.log(resJson[10].longitude)
-            // this.setState({samplePosition:{sampleLat : resJson[0].latitude,
-            // sampleLng:resJson[0].longitude}
-
-            // })
-
-          })
-      }).catch(err => {
-        console.error(err)
-      })
-
-
-
+    }
   }
 
   render() {
@@ -180,17 +186,7 @@ class App extends Component {
          </Popup>
               </Marker> : ''
           }
-          {/* {this.state.samplePosition.map(sample =>{
-            <Marker
-              position={sample.latitude,sample.longitude}
-              icon={sampleIcon}>
-              <Popup>
-                {this.state.samplePosition.sampleLat}
-              </Popup>
-            </Marker>
-          })
-            
-          } */}
+
           {this.state.canSample ?
             this.state.samplePosition.map(sample => {
               return (
@@ -213,8 +209,17 @@ class App extends Component {
         <div className="box"  >
           <h1> <Badge color="secondary">{this.state.counter}</Badge></h1>
         </div>
-        <Button className='button' color="primary" onClick={this.counterAndLocation}>FISH</Button>{' '}
-        <Button className='playButton' color="primary" onClick={this.startSample}>play</Button>{' '}
+        {this.state.canSample ?
+          <Button className='button' color="primary" onClick={this.counterAndLocation}>sample</Button>
+        :
+        <Button className='button' color="primary" onClick={this.counterAndLocation}>reset</Button>
+        }
+        {this.state.canSample ?
+          <Button className='playButton' color="success" onClick={this.startSample}>sampling, push to stop</Button>
+          :
+          <Button className='playButton' color="info" onClick={this.startSample}>push to start sampling</Button>
+
+        }
 
       </div>
 

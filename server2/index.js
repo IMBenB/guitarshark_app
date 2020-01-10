@@ -46,14 +46,14 @@ app.post('/addData', (req, res) => {
     sampleDetails.save().then(doc => {
         console.log('saved doc 1');
 
-        samplesModel.find({})
-            .then(doc => {
+        // samplesModel.find({})
+        //     .then(doc => {
 
-                res.send(doc)
-            }).catch(err => {
-                console.log(err)
-                reject(err)
-            });
+        //         res.send(doc)
+        //     }).catch(err => {
+        //         console.log(err)
+        //         reject(err)
+        //     });
     }).catch(err => {
         console.log(err);
         reject(err)
