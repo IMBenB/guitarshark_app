@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import L from 'leaflet';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Button, Badge } from 'reactstrap';
+import {Button, Badge, Navbar, NavbarBrand, Nav,UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, NavbarText} from 'reactstrap';
 import iconUrl from './v_icon.svg'
 import './App.css';
 
@@ -37,11 +37,14 @@ class App extends Component {
       canSample: false,
       zoom: 2,
       counter: 0,
-      samplePosition: []
+      samplePosition: [],
+      isOpen:false, 
+      setIsOpen:false
     }
   }
 
   componentDidMount() {
+    
     fetch('http://localhost:5000/getData', {
       method: 'POST',
       body: JSON.stringify(), // data can be `string` or {object}!
@@ -108,6 +111,7 @@ class App extends Component {
     this.setState({ canSample: !this.state.canSample })
     console.log(this.state.canSample)
   }
+  
   counterAndLocation = (e) => {
     // this.setState({ counter: this.state.counter + 1 })
     // e.preventDefault();
@@ -129,10 +133,16 @@ class App extends Component {
         console.log(`lng: ${this.state.location.lng}`)
 
       });
+      let sampleDate = new Date();
+
+
       let data = {
         latitude: this.state.location.lat,
-        longitude: this.state.location.lng
+        longitude: this.state.location.lng,
+        date: sampleDate.toLocaleDateString(),
+        time: sampleDate.toLocaleTimeString()
       };
+
       fetch('http://localhost:5000/addData', {
         method: 'POST',
         body: JSON.stringify(data), // data can be `string` or {object}!
@@ -143,7 +153,7 @@ class App extends Component {
         .then(res => {
           res.json()
             .then(resJson => {
-              
+
               console.log('ben')
               console.dir(resJson)
               // console.log(resJson[10].latitude)
@@ -170,62 +180,92 @@ class App extends Component {
 
     const position = [this.state.location.lat, this.state.location.lng];
     // const position2 = [32.111, 35.1111]
+    
     return (
-      <div className="map" >
-        <Map className="map" center={[this.state.location.lat, this.state.location.lng]} zoom={this.state.zoom}>
-          <TileLayer
-            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          {
-            this.state.haveUserLocation ?
-              <Marker
-                position={position}
-                icon={myIcon}>
-                <Popup>
-                  you start here
-         </Popup>
-              </Marker> : ''
-          }
+      
+        
+        <div className="map" >
+          
+        <Navbar  color="info" light expand="md">
+        <NavbarBrand >Sampler: Ben </NavbarBrand>
 
-          {
-          // this.state.canSample ?
-            this.state.samplePosition.map(sample => {
-              return (
-
+               
+          <Nav className="mr-auto" navbar>
+          
+            <UncontrolledDropdown nav inNavbar>
+              <DropdownToggle nav caret>
+                Search
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem>
+                  By date
+                </DropdownItem>
+                <DropdownItem>
+                  By hours
+                </DropdownItem>
+                
+                
+              </DropdownMenu>
+            </UncontrolledDropdown>
+            
+          </Nav>
+              
+         
+        </Navbar>
+          <Map className="map" center={[this.state.location.lat, this.state.location.lng]} zoom={this.state.zoom}>
+            <TileLayer
+              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            {
+              this.state.haveUserLocation ?
                 <Marker
-                  key={sample._id}
-                  position={[sample.latitude, sample.longitude]}
-                  icon={sampleIcon}>
-                  {console.log('a')}
+                  position={position}
+                  icon={myIcon}>
                   <Popup>
+                    you start here
+         </Popup>
+                </Marker> : ''
+            }
+
+            {
+              // this.state.canSample ?
+              this.state.samplePosition.map(sample => {
+                return (
+
+                  <Marker
+                    key={sample._id}
+                    position={[sample.latitude, sample.longitude]}
+                    icon={sampleIcon}>
+                    {console.log('a')}
+                    <Popup>
 
 
-                    {sample._id}
-                  </Popup>
-                </Marker>)
-            }) 
-            // : console.log('fail')
+                      {sample._id}
+                    </Popup>
+                  </Marker>)
+              })
+              // : console.log('fail')
+            }
+
+          </Map>
+          <div className="box"  >
+            <h1> <Badge color="secondary">{this.state.counter}</Badge></h1>
+          </div>
+          {this.state.canSample ?
+            <Button className='button' color="primary" onClick={this.counterAndLocation}>sample</Button>
+            :
+            <Button className='button' color="primary" onClick={this.counterAndLocation}>reset</Button>
+          }
+          {this.state.canSample ?
+            <Button className='playButton' color="success" onClick={this.startSample}>sampling, push to stop</Button>
+            :
+            <Button className='playButton' color="info" onClick={this.startSample}>push to start sampling</Button>
+
           }
 
-        </Map>
-        <div className="box"  >
-          <h1> <Badge color="secondary">{this.state.counter}</Badge></h1>
         </div>
-        {this.state.canSample ?
-          <Button className='button' color="primary" onClick={this.counterAndLocation}>sample</Button>
-        :
-        <Button className='button' color="primary" onClick={this.counterAndLocation}>reset</Button>
-        }
-        {this.state.canSample ?
-          <Button className='playButton' color="success" onClick={this.startSample}>sampling, push to stop</Button>
-          :
-          <Button className='playButton' color="info" onClick={this.startSample}>push to start sampling</Button>
-
-        }
-
-      </div>
-
+      
     );
   }
 }

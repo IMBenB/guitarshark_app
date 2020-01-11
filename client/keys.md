@@ -14,3 +14,24 @@ multipile samples: 2:39
 
 
 deploy: 2:36
+
+
+to do
+
+[V] add date and time
+[V] add header
+[] filter
+    *by date
+    *by time
+    *by user
+[] login
+    *pass user name to data base
+[] master user
+    *filter
+    *send all data in excel to email
+[] center user in map all the time
+need help
+    [] insitu adding sample tag
+    [] change date and time from string to...
+[] deploy
+[] party
