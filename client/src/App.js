@@ -18,8 +18,8 @@ const myIcon = L.icon({
 const sampleIcon = L.icon({
   iconUrl: iconUrl,
   iconSize: [30, 50],
-  iconAnchor: [15, 50],
-  popupAnchor: [0, -30],
+  // iconAnchor: [15, 50],
+  popupAnchor: [0, -15],
 
 
 });
@@ -214,7 +214,7 @@ class App extends Component {
         </Navbar>
           <Map className="map" center={[this.state.location.lat, this.state.location.lng]} zoom={this.state.zoom}>
             <TileLayer
-              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors and Location by Tresnatiq from the Noun Project'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {

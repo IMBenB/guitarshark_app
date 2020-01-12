@@ -32,6 +32,7 @@ to do
 [] center user in map all the time
 need help
     [] insitu adding sample tag
+    [V] fix scroll
     [] change date and time from string to...
 [] deploy
 [] party
