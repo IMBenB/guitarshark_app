@@ -1,0 +1,10 @@
+.login{
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 3px solid;
+    background: white;
+    color:gray;
+    user-select: none;
+    cursor: pointer;
+    
+}

@@ -32,7 +32,7 @@ const userSampleSchema = new Schema({
 
 app.post('/addData', (req, res) => {
     console.log('ben')
-    let name = 'ben';
+    let name = req.body['user'];
     let latitude = req.body['latitude']
     let longitude = req.body['longitude']
     let date = req.body['date']
@@ -92,7 +92,7 @@ app.post('/getData', (req, res) => {
 
         samplesModel.find({})
             .then(doc => {
-                console.log(doc);
+                // console.log(doc);
                 let docObj = { doc, isOK: true };
                 res.send(docObj);
             })

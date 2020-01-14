@@ -24,8 +24,9 @@ to do
     *by date
     *by time
     *by user
-[] login
+[V] login
     *pass user name to data base
+    *place login window and make it disapear
 [] master user
     *filter
     *send all data in excel to email

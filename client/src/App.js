@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import L from 'leaflet';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
-import {Button, Badge, Navbar, NavbarBrand, Nav,UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, NavbarText} from 'reactstrap';
+import { Button, Badge, Navbar, NavbarBrand, Nav, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import iconUrl from './v_icon.svg'
 import './App.css';
-
+import Login from './view/Login';
 
 
 const myIcon = L.icon({
@@ -38,13 +38,33 @@ class App extends Component {
       zoom: 2,
       counter: 0,
       samplePosition: [],
-      isOpen:false, 
-      setIsOpen:false
+      isOpen: false,
+      setIsOpen: false,
+      user: "",
+      password:""
     }
+    this.userName = this.userName.bind(this)
   }
 
+  //   constructor(props) {
+  //     super(props);
+
+  //     this.state = {
+  //         name: '',
+  //         password: ''
+  //     }
+  //     this.saveUserName = this.saveUserName.bind(this);
+  // }
+  // saveUserName(e) {
+  //     e.preventDefault()
+  //     this.setState({
+  //         name: e.target.elements.name.value,
+  //     })
+  //     console.log(this.state.name)
+  // }
+
   componentDidMount() {
-    
+
     fetch('http://localhost:5000/getData', {
       method: 'POST',
       body: JSON.stringify(), // data can be `string` or {object}!
@@ -65,7 +85,7 @@ class App extends Component {
         }
 
         console.log('bbb')
-        // console.dir(samplePosition);
+
 
 
       }).catch(err => {
@@ -105,16 +125,24 @@ class App extends Component {
           // alert('please confirm your location')
         }
       )
-    };//
+    };
   }
+  userName(newUser, password) {
+    this.setState({
+      user: newUser,
+      password: password
+    })
+    console.log(this.state.password)
+  }
+
+
   startSample = (e) => {
     this.setState({ canSample: !this.state.canSample })
     console.log(this.state.canSample)
   }
-  
+
   counterAndLocation = (e) => {
-    // this.setState({ counter: this.state.counter + 1 })
-    // e.preventDefault();
+
     if (this.state.canSample) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.setState({
@@ -128,7 +156,7 @@ class App extends Component {
 
 
         })
-        // console.log(position)
+
         console.log(`lat: ${this.state.location.lat}`)
         console.log(`lng: ${this.state.location.lng}`)
 
@@ -137,6 +165,7 @@ class App extends Component {
 
 
       let data = {
+        user: this.state.user,
         latitude: this.state.location.lat,
         longitude: this.state.location.lng,
         date: sampleDate.toLocaleDateString(),
@@ -156,12 +185,7 @@ class App extends Component {
 
               console.log('ben')
               console.dir(resJson)
-              // console.log(resJson[10].latitude)
-              // console.log(resJson[10].longitude)
-              // this.setState({samplePosition:{sampleLat : resJson[0].latitude,
-              // sampleLng:resJson[0].longitude}
 
-              // })
 
             })
         }).catch(err => {
@@ -175,23 +199,25 @@ class App extends Component {
     }
   }
 
+
+
   render() {
 
 
     const position = [this.state.location.lat, this.state.location.lng];
-    // const position2 = [32.111, 35.1111]
-    
-    return (
-      
-        
-        <div className="map" >
-          
-        <Navbar  color="info" light expand="md">
-        <NavbarBrand >Sampler: Ben </NavbarBrand>
 
-               
+
+    return (
+
+
+      <div className="map" >
+
+        <Navbar color="info" light expand="md">
+          <NavbarBrand >Sampler: {this.state.user} </NavbarBrand>
+
+
           <Nav className="mr-auto" navbar>
-          
+
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
                 Search
@@ -203,69 +229,77 @@ class App extends Component {
                 <DropdownItem>
                   By hours
                 </DropdownItem>
-                
-                
+
+
               </DropdownMenu>
             </UncontrolledDropdown>
-            
+
           </Nav>
-              
-         
+
+
         </Navbar>
-          <Map className="map" center={[this.state.location.lat, this.state.location.lng]} zoom={this.state.zoom}>
-            <TileLayer
-              attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors and Location by Tresnatiq from the Noun Project'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            {
-              this.state.haveUserLocation ?
-                <Marker
-                  position={position}
-                  icon={myIcon}>
-                  <Popup>
-                    you start here
+
+        {
+        (this.state.user === "") ?
+          <Login userName={this.userName} />
+          : ''
+
+        }
+
+        <Map className="map" center={[this.state.location.lat, this.state.location.lng]} zoom={this.state.zoom}>
+          <TileLayer
+            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors and Location by Tresnatiq from the Noun Project'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          {
+            this.state.haveUserLocation ?
+              <Marker
+                position={position}
+                icon={myIcon}>
+                <Popup>
+                  you start here
          </Popup>
-                </Marker> : ''
-            }
-
-            {
-              // this.state.canSample ?
-              this.state.samplePosition.map(sample => {
-                return (
-
-                  <Marker
-                    key={sample._id}
-                    position={[sample.latitude, sample.longitude]}
-                    icon={sampleIcon}>
-                    {console.log('a')}
-                    <Popup>
-
-
-                      {sample._id}
-                    </Popup>
-                  </Marker>)
-              })
-              // : console.log('fail')
-            }
-
-          </Map>
-          <div className="box"  >
-            <h1> <Badge color="secondary">{this.state.counter}</Badge></h1>
-          </div>
-          {this.state.canSample ?
-            <Button className='button' color="primary" onClick={this.counterAndLocation}>sample</Button>
-            :
-            <Button className='button' color="primary" onClick={this.counterAndLocation}>reset</Button>
-          }
-          {this.state.canSample ?
-            <Button className='playButton' color="success" onClick={this.startSample}>sampling, push to stop</Button>
-            :
-            <Button className='playButton' color="info" onClick={this.startSample}>push to start sampling</Button>
-
+              </Marker> : ''
           }
 
+          {
+            // this.state.canSample ?
+            this.state.samplePosition.map(sample => {
+              return (
+
+                <Marker
+                  key={sample._id}
+                  position={[sample.latitude, sample.longitude]}
+                  icon={sampleIcon}>
+                  {console.log('a')}
+                  <Popup>
+
+
+                    {sample._id}
+                  </Popup>
+                </Marker>)
+            })
+            // : console.log('fail')
+          }
+
+        </Map>
+        <div className="box"  >
+          <h1> <Badge color="secondary">{this.state.counter}</Badge></h1>
         </div>
-      
+        {this.state.canSample ?
+          <Button className='button' color="primary" onClick={this.counterAndLocation}>sample</Button>
+          :
+          <Button className='button' color="primary" onClick={this.counterAndLocation}>reset</Button>
+        }
+        {this.state.canSample ?
+          <Button className='playButton' color="success" onClick={this.startSample}>sampling, push to stop</Button>
+          :
+          <Button className='playButton' color="info" onClick={this.startSample}>push to start sampling</Button>
+
+        }
+
+      </div>
+
     );
   }
 }
