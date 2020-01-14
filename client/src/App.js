@@ -240,7 +240,7 @@ class App extends Component {
         </Navbar>
 
         {
-        (this.state.user === "") ?
+        (this.state.user === "" || this.state.password === "") ?
           <Login userName={this.userName} />
           : ''
 
@@ -289,12 +289,12 @@ class App extends Component {
         {this.state.canSample ?
           <Button className='button' color="primary" onClick={this.counterAndLocation}>sample</Button>
           :
-          <Button className='button' color="primary" onClick={this.counterAndLocation}>reset</Button>
+          <Button className='button' disabled={(this.state.user === "" || this.state.password === "")} color="primary" onClick={this.counterAndLocation}>reset</Button>
         }
         {this.state.canSample ?
           <Button className='playButton' color="success" onClick={this.startSample}>sampling, push to stop</Button>
           :
-          <Button className='playButton' color="info" onClick={this.startSample}>push to start sampling</Button>
+          <Button className='playButton' disabled={(this.state.user === "" || this.state.password === "")} color="info" onClick={this.startSample}>push to start sampling</Button>
 
         }
 
