@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import L from 'leaflet';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Button, Badge, Navbar, NavbarBrand, Nav, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Button, Badge, Navbar, NavbarBrand, Nav, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, NavbarText } from 'reactstrap';
 import iconUrl from './v_icon.svg'
 import './App.css';
 import Login from './view/Login';
+
+import { CSVLink } from "react-csv";
+
 
 
 const myIcon = L.icon({
@@ -41,9 +44,10 @@ class App extends Component {
       isOpen: false,
       setIsOpen: false,
       user: "",
-      password:""
+      password: ""
     }
     this.userName = this.userName.bind(this)
+
   }
 
   //   constructor(props) {
@@ -127,6 +131,33 @@ class App extends Component {
       )
     };
   }
+
+  // downloadData() {
+
+  //   const csvRows = [];
+
+  //   //get headers
+  //   const data = this.state.samplePosition;
+    
+  //   const headers = Object.keys(data[0])
+
+  //   csvRows.push(headers.join(','));
+
+
+  //   // loop over the rows
+  //   for (const row of data) {
+  //     const value = headers.map(header => {
+  //       return row[header];
+  //     })
+  //     csvRows.push(value.join(','));
+      
+  //   }
+
+  //   return csvRows.join('\n')
+        
+  // };
+
+
   userName(newUser, password) {
     this.setState({
       user: newUser,
@@ -236,13 +267,13 @@ class App extends Component {
 
           </Nav>
 
-
+          <NavbarText><Button color="warning"><CSVLink data={this.state.samplePosition}>download data</CSVLink></Button></NavbarText>
         </Navbar>
 
         {
-        (this.state.user === "" || this.state.password === "") ?
-          <Login userName={this.userName} />
-          : ''
+          (this.state.user === "" || this.state.password === "") ?
+            <Login userName={this.userName} />
+            : ''
 
         }
 
