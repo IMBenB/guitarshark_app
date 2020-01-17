@@ -105,6 +105,31 @@ app.post('/getData', (req, res) => {
 
 })
 
+app.post('/deleteData', (req, res) => {
+
+    try {
+
+        mongoose.connect(url, { useNewUrlParser: true });
+        mongoose.set('useUnifiedTopology', true);
+
+        const samplesModel = mongoose.model('guitar samples', userSampleSchema);
+
+
+        samplesModel.deleteMany({})
+            .then(doc => {
+                // console.log(doc);
+                let docObj = { doc, isOK: true };
+                res.send(docObj);
+            })
+
+    } catch (err) {
+        res.send({ isOK: false, error: err })
+        console.log(err)
+    }
+
+
+})
+
 
 let port = process.env.PORT || 5000;
 

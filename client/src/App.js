@@ -47,6 +47,7 @@ class App extends Component {
       password: ""
     }
     this.userName = this.userName.bind(this)
+    this.logout = this.logout.bind(this)
 
   }
 
@@ -133,41 +134,35 @@ class App extends Component {
   }
 
 
-  componentDidUpdate() {
-
-    fetch('http://localhost:5000/getData', {
-      method: 'POST',
-      body: JSON.stringify(), // data can be `string` or {object}!
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => res.json())
-      .then(samplePosition => {
-        if (samplePosition.isOK) {
-          this.setState({
-            samplePosition: samplePosition.doc
-            // })
-
-          })
-        } else {
-          console.dir(samplePosition.error)
-        }
-
-      }).catch(err => {
-        console.error(err)
-      })
-
-  }
+  // componentDidUpdate() {no
 
 
 
   userName(newUser, password) {
+
+
+    if (password !== "SharkBate" && (password !== "DEMO" && newUser !== "DEMO") && (password !== "MasterAdi" && newUser !== "AdiMaster")) {
+      alert("user name or password is incorrect");
+      this.setState({
+        user: "",
+        password: ""
+      })
+    } else {
+
+      this.setState({
+        user: newUser,
+        password: password
+      });
+    }
+
+  }
+
+  logout() {
     this.setState({
-      user: newUser,
-      password: password
+      user: null,
+      password: null
     })
-    console.log(this.state.password)
+
   }
 
 
@@ -234,6 +229,31 @@ class App extends Component {
     }
   }
 
+  deleteData() {
+    if (window.confirm('Are you sure you want to delete all database?')) {
+      fetch('http://localhost:5000/deleteData', {
+        method: 'POST',
+        body: JSON.stringify(), // data can be `string` or {object}!
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(res => {
+          res.json()
+            .then(resJson => {
+
+              console.log('data deleted')
+              
+
+
+            })
+        }).catch(err => {
+          console.error(err)
+        })
+    }
+  else{
+    console.log('ben')
+  }}
 
 
   render() {
@@ -270,10 +290,11 @@ class App extends Component {
             </UncontrolledDropdown> */}
 
           </Nav>
-{this.state.user==="AdiMaster" && this.state.password==="MasterAdi"?
-          <NavbarText><Button color="warning"><CSVLink data={this.state.samplePosition}>download data</CSVLink></Button></NavbarText>
-          :""
-}
+          {this.state.user === "AdiMaster" && this.state.password === "MasterAdi" ?
+            <NavbarText><Button color="warning"><CSVLink data={this.state.samplePosition}>download data</CSVLink></Button> <Button onClick={this.deleteData} color="danger">delete all data</Button> </NavbarText>
+            : ""}
+
+          {/* <NavbarText> <Button outline  onClick={this.logout} color="warning">logout</Button></NavbarText> */}
         </Navbar>
 
         {
@@ -310,8 +331,6 @@ class App extends Component {
                   icon={sampleIcon}>
                   {console.log('a')}
                   <Popup>
-
-
                     {sample.name}
                   </Popup>
                 </Marker>)
