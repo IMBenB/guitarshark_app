@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import L from 'leaflet';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Button, Badge, Navbar, NavbarBrand, Nav, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, NavbarText } from 'reactstrap';
+import { Button, Badge, Navbar, NavbarBrand, Nav, NavbarText } from 'reactstrap';
 import iconUrl from './v_icon.svg'
 import './App.css';
 import Login from './view/Login';
@@ -21,7 +21,6 @@ const myIcon = L.icon({
 const sampleIcon = L.icon({
   iconUrl: iconUrl,
   iconSize: [30, 50],
-  // iconAnchor: [15, 50],
   popupAnchor: [0, -15],
 
 
@@ -51,28 +50,12 @@ class App extends Component {
 
   }
 
-  //   constructor(props) {
-  //     super(props);
-
-  //     this.state = {
-  //         name: '',
-  //         password: ''
-  //     }
-  //     this.saveUserName = this.saveUserName.bind(this);
-  // }
-  // saveUserName(e) {
-  //     e.preventDefault()
-  //     this.setState({
-  //         name: e.target.elements.name.value,
-  //     })
-  //     console.log(this.state.name)
-  // }
 
   componentDidMount() {
 
     fetch('http://localhost:5000/getData', {
       method: 'POST',
-      body: JSON.stringify(), // data can be `string` or {object}!
+      body: JSON.stringify(), 
       headers: {
         'Content-Type': 'application/json'
       }
@@ -82,7 +65,7 @@ class App extends Component {
         if (samplePosition.isOK) {
           this.setState({
             samplePosition: samplePosition.doc
-            // })
+            
 
           })
         } else {
@@ -127,14 +110,14 @@ class App extends Component {
 
               })
             })
-          // alert('please confirm your location')
+          
         }
       )
     };
   }
 
 
-  // componentDidUpdate() {no
+  
 
 
 
@@ -204,7 +187,7 @@ class App extends Component {
 
       fetch('http://localhost:5000/addData', {
         method: 'POST',
-        body: JSON.stringify(data), // data can be `string` or {object}!
+        body: JSON.stringify(data), 
         headers: {
           'Content-Type': 'application/json'
         }
@@ -233,7 +216,7 @@ class App extends Component {
     if (window.confirm('Are you sure you want to delete all database?')) {
       fetch('http://localhost:5000/deleteData', {
         method: 'POST',
-        body: JSON.stringify(), // data can be `string` or {object}!
+        body: JSON.stringify(), 
         headers: {
           'Content-Type': 'application/json'
         }
@@ -273,21 +256,6 @@ class App extends Component {
 
           <Nav className="mr-auto" navbar>
 
-            {/* <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
-                Search
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem>
-                  By date
-                </DropdownItem>
-                <DropdownItem>
-                  By hours
-                </DropdownItem>
-
-
-              </DropdownMenu>
-            </UncontrolledDropdown> */}
 
           </Nav>
           {(this.state.user === "AdiMaster" && this.state.password === "MasterAdi") || (this.state.user === "DEMO" && this.state.password === "DEMO") ?
@@ -324,7 +292,7 @@ class App extends Component {
           }
 
           {
-            // this.state.canSample ?
+            
             this.state.samplePosition.map(sample => {
               return (
 
@@ -338,7 +306,7 @@ class App extends Component {
                   </Popup>
                 </Marker>)
             })
-            // : console.log('fail')
+         
           }
 
         </Map>
