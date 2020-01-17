@@ -290,8 +290,11 @@ class App extends Component {
             </UncontrolledDropdown> */}
 
           </Nav>
-          {this.state.user === "AdiMaster" && this.state.password === "MasterAdi" ?
-            <NavbarText><Button color="warning"><CSVLink data={this.state.samplePosition}>download data</CSVLink></Button> <Button onClick={this.deleteData} color="danger">delete all data</Button> </NavbarText>
+          {(this.state.user === "AdiMaster" && this.state.password === "MasterAdi") || (this.state.user === "DEMO" && this.state.password === "DEMO") ?
+            <NavbarText><Button color="warning"><CSVLink data={this.state.samplePosition}>download data</CSVLink></Button>  </NavbarText>
+            : ""}
+          {(this.state.user === "AdiMaster" && this.state.password === "MasterAdi")  ?
+            <NavbarText>   <Button onClick={this.deleteData} color="danger">delete all data</Button> </NavbarText>
             : ""}
 
           {/* <NavbarText> <Button outline  onClick={this.logout} color="warning">logout</Button></NavbarText> */}
