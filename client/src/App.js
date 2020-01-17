@@ -132,30 +132,34 @@ class App extends Component {
     };
   }
 
-  // downloadData() {
 
-  //   const csvRows = [];
+  componentDidUpdate() {
 
-  //   //get headers
-  //   const data = this.state.samplePosition;
-    
-  //   const headers = Object.keys(data[0])
+    fetch('http://localhost:5000/getData', {
+      method: 'POST',
+      body: JSON.stringify(), // data can be `string` or {object}!
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(samplePosition => {
+        if (samplePosition.isOK) {
+          this.setState({
+            samplePosition: samplePosition.doc
+            // })
 
-  //   csvRows.push(headers.join(','));
+          })
+        } else {
+          console.dir(samplePosition.error)
+        }
 
+      }).catch(err => {
+        console.error(err)
+      })
 
-  //   // loop over the rows
-  //   for (const row of data) {
-  //     const value = headers.map(header => {
-  //       return row[header];
-  //     })
-  //     csvRows.push(value.join(','));
-      
-  //   }
+  }
 
-  //   return csvRows.join('\n')
-        
-  // };
 
 
   userName(newUser, password) {
@@ -249,7 +253,7 @@ class App extends Component {
 
           <Nav className="mr-auto" navbar>
 
-            <UncontrolledDropdown nav inNavbar>
+            {/* <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
                 Search
               </DropdownToggle>
@@ -263,11 +267,13 @@ class App extends Component {
 
 
               </DropdownMenu>
-            </UncontrolledDropdown>
+            </UncontrolledDropdown> */}
 
           </Nav>
-
+{this.state.user==="AdiMaster" && this.state.password==="MasterAdi"?
           <NavbarText><Button color="warning"><CSVLink data={this.state.samplePosition}>download data</CSVLink></Button></NavbarText>
+          :""
+}
         </Navbar>
 
         {
@@ -306,7 +312,7 @@ class App extends Component {
                   <Popup>
 
 
-                    {sample._id}
+                    {sample.name}
                   </Popup>
                 </Marker>)
             })

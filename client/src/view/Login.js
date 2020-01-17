@@ -28,7 +28,7 @@ class Login extends React.Component {
                 }}
                 // onSubmit={this.saveUserName}
                 >
-                    <input type='text' name='userName' placeholder='user name' />
+                    <input type='text'  name='userName' placeholder='user name' />
                     <input type='password' name='password' placeholder='password' />
                     
                     <input type='submit' value='login'  />
