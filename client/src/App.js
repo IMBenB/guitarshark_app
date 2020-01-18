@@ -32,8 +32,8 @@ class App extends Component {
 
     this.state = {
       location: {
-        lat: "",
-        lng: "",
+        lat: 0,
+        lng: 0,
       },
       haveUserLocation: false,
       canSample: false,
