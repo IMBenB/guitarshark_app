@@ -216,6 +216,32 @@ class App extends Component {
         counter: 0
       })
     }
+    fetch('http://localhost:5000/getData', {
+      method: 'POST',
+      body: JSON.stringify(),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(res => res.json())
+      .then(samplePosition => {
+        if (samplePosition.isOK) {
+          this.setState({
+            samplePosition: samplePosition.doc
+
+
+          })
+        } else {
+          console.dir(samplePosition.error)
+        }
+
+        console.log('bbb')
+
+
+
+      }).catch(err => {
+        console.error(err)
+      })
   }
 
   deleteData() {

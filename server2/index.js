@@ -1,9 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const cors = require('cors')
-
+const cors = require('cors');
+//
 const app = express();
+
+//
+
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded());
@@ -64,18 +67,6 @@ app.post('/addData', (req, res) => {
 
 
 
-    // sampleDetails.save().then(doc => {
-    //     console.log(doc);
-    // })
-    // samplesModel.find({ samplesModel })
-    //     .then(doc => {
-    //         console.log(doc);
-    //         res.send(doc);
-    //     })
-
-    // .catch(err => {
-    //     console.log(err)
-    // });
 
 });
 
@@ -131,7 +122,12 @@ app.post('/deleteData', (req, res) => {
 })
 
 
+
+
 let port = process.env.PORT || 5000;
+
+
+
 
 app.listen(port, function () {
     console.log('we on', port)
