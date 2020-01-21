@@ -35,6 +35,10 @@ class App extends Component {
         lat: 0,
         lng: 0,
       },
+      sampleLocation:{
+        latitude:"",
+        longitude:""
+      },
       haveUserLocation: false,
       canSample: false,
       zoom: 2,
@@ -55,7 +59,7 @@ class App extends Component {
 
     fetch('http://localhost:5000/getData', {
       method: 'POST',
-      body: JSON.stringify(), 
+      body: JSON.stringify(),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -65,7 +69,7 @@ class App extends Component {
         if (samplePosition.isOK) {
           this.setState({
             samplePosition: samplePosition.doc
-            
+
 
           })
         } else {
@@ -81,7 +85,7 @@ class App extends Component {
       })
 
 
-    if (this.state.location.lat === "") {
+    if (this.state.location.lat === 0) {
       navigator.geolocation.getCurrentPosition((position) => {
 
         this.setState({
@@ -110,21 +114,23 @@ class App extends Component {
 
               })
             })
-          
+
         }
       )
     };
   }
 
 
-  
+
 
 
 
   userName(newUser, password) {
 
 
-    if (password !== "SharkBate" && (password !== "DEMO" && newUser !== "DEMO") && (password !== "MasterAdi" && newUser !== "AdiMaster")) {
+    if (password !== "SharkBate" &&
+      (password !== "DEMO" && newUser !== "DEMO") &&
+      (password !== "MasterAdi" && newUser !== "AdiMaster")) {
       alert("user name or password is incorrect");
       this.setState({
         user: "",
@@ -160,9 +166,9 @@ class App extends Component {
       navigator.geolocation.getCurrentPosition((position) => {
         this.setState({
           counter: this.state.counter + 1,
-          location: {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
+          sampleLocation: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
           },
           haveUserLocation: true,
           zoom: 15,
@@ -187,7 +193,7 @@ class App extends Component {
 
       fetch('http://localhost:5000/addData', {
         method: 'POST',
-        body: JSON.stringify(data), 
+        body: JSON.stringify(data),
         headers: {
           'Content-Type': 'application/json'
         }
@@ -216,7 +222,7 @@ class App extends Component {
     if (window.confirm('Are you sure you want to delete all database?')) {
       fetch('http://localhost:5000/deleteData', {
         method: 'POST',
-        body: JSON.stringify(), 
+        body: JSON.stringify(),
         headers: {
           'Content-Type': 'application/json'
         }
@@ -226,7 +232,7 @@ class App extends Component {
             .then(resJson => {
 
               console.log('data deleted')
-              
+
 
 
             })
@@ -234,9 +240,10 @@ class App extends Component {
           console.error(err)
         })
     }
-  else{
-    console.log('ben')
-  }}
+    else {
+      console.log('ben')
+    }
+  }
 
 
   render() {
@@ -261,7 +268,7 @@ class App extends Component {
           {(this.state.user === "AdiMaster" && this.state.password === "MasterAdi") || (this.state.user === "DEMO" && this.state.password === "DEMO") ?
             <NavbarText><Button color="warning"><CSVLink data={this.state.samplePosition}>download data</CSVLink></Button>  </NavbarText>
             : ""}
-          {(this.state.user === "AdiMaster" && this.state.password === "MasterAdi")  ?
+          {(this.state.user === "AdiMaster" && this.state.password === "MasterAdi") ?
             <NavbarText>   <Button onClick={this.deleteData} color="danger">delete all data</Button> </NavbarText>
             : ""}
 
@@ -292,7 +299,7 @@ class App extends Component {
           }
 
           {
-            
+
             this.state.samplePosition.map(sample => {
               return (
 
@@ -306,7 +313,7 @@ class App extends Component {
                   </Popup>
                 </Marker>)
             })
-         
+
           }
 
         </Map>
