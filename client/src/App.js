@@ -185,8 +185,8 @@ class App extends Component {
 
       let data = {
         user: this.state.user,
-        latitude: this.state.location.lat,
-        longitude: this.state.location.lng,
+        latitude: this.state.sampleLocation.latitude,
+        longitude: this.state.sampleLocation.longitude,
         date: sampleDate.toLocaleDateString(),
         time: sampleDate.toLocaleTimeString()
       };
