@@ -33,11 +33,11 @@ class App extends Component {
     this.state = {
       location: {
         lat: 0,
-        lng: 0,
+        lng: 0
       },
-      sampleLocation:{
-        latitude:"",
-        longitude:""
+      sampleLocation: {
+        latitude: 0,
+        longitude: 0
       },
       haveUserLocation: false,
       canSample: false,
@@ -109,6 +109,7 @@ class App extends Component {
                   lat: location.latitude,
                   lng: location.longitude
                 },
+                
                 haveUserLocation: true,
                 zoom: 15,
 
@@ -182,7 +183,7 @@ class App extends Component {
       });
       let sampleDate = new Date();
 
-
+      
       let data = {
         user: this.state.user,
         latitude: this.state.sampleLocation.latitude,
@@ -216,6 +217,7 @@ class App extends Component {
         counter: 0
       })
     }
+    
     fetch('http://localhost:5000/getData', {
       method: 'POST',
       body: JSON.stringify(),
