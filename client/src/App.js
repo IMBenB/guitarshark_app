@@ -176,8 +176,8 @@ class App extends Component {
 
         })
 
-        console.log(`lat: ${this.state.location.lat}`)
-        console.log(`lng: ${this.state.location.lng}`)
+        console.log(`lat: ${this.state.sampleLocation.latitude}`)
+        console.log(`lng: ${this.state.sampleLocation.longitude}`)
 
       });
       let sampleDate = new Date();
