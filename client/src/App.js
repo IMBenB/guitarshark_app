@@ -109,7 +109,7 @@ class App extends Component {
                   lat: location.latitude,
                   lng: location.longitude
                 },
-                
+
                 haveUserLocation: true,
                 zoom: 15,
 
@@ -162,12 +162,12 @@ class App extends Component {
   }
 
 
-  
 
-  
+
+
   counterAndLocation = (e) => {
 
-    if (this.state.canSample) {
+    if (this.state.canSample) { 
       navigator.geolocation.getCurrentPosition((position) => {
         this.setState({
           counter: this.state.counter + 1,
@@ -183,81 +183,86 @@ class App extends Component {
 
         console.log(`lat: ${this.state.sampleLocation.latitude}`)
         console.log(`lng: ${this.state.sampleLocation.longitude}`)
+        console.log(`1`)
 
-        
+
 
         let sampleDate = new Date();
 
-      //send the original state before update new data
-     
-      let data = {
-        user: this.state.user,
-        latitude: this.state.sampleLocation.latitude,
-        longitude: this.state.sampleLocation.longitude,
-        date: sampleDate.toLocaleDateString(),
-        time: sampleDate.toLocaleTimeString(),
-        
-      };
-      console.log(`lat data: ${this.state.sampleLocation.latitude}`)
-      console.log(`lng data: ${this.state.sampleLocation.longitude}`)
+        //send the original state before update new data
+
+        let data = {
+          user: this.state.user,
+          latitude: this.state.sampleLocation.latitude,
+          longitude: this.state.sampleLocation.longitude,
+          date: sampleDate.toLocaleDateString(),
+          time: sampleDate.toLocaleTimeString(),
+
+        };
+        console.log(`lat data: ${this.state.sampleLocation.latitude}`)
+        console.log(`lng data: ${this.state.sampleLocation.longitude}`)
+        console.log(`2`)
 
 
-      fetch('http://localhost:5000/addData', {
-        
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(res => {
-          res.json()
-            .then(resJson => {
+        fetch('http://localhost:5000/addData', {
 
-              console.log('ben')
-              console.dir(resJson)
-
-
-            })
-        }).catch(err => {
-          console.error(err)
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json'
+          }
         })
+          .then(res => {
+            res.json()
+              .then(resJson => {
+
+                console.log('ben')
+                console.log(`3`)
+                console.dir(resJson)
+
+                fetch('http://localhost:5000/getData', {
+                  method: 'POST',
+                  body: JSON.stringify(),
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                })
+                  .then(res => res.json())
+                  .then(samplePosition => {
+                    if (samplePosition.isOK) {
+                      this.setState({
+                        samplePosition: samplePosition.doc
+            
+            
+            
+                      })
+                      console.log(`4`)
+                    } else {
+                      console.dir(samplePosition.error)
+                    }
+            
+                    console.log('bbb')
+            
+            
+            
+                  }).catch(err => {
+                    console.error(err)
+                  })
+
+              })
+          }).catch(err => {
+            console.error(err)
+          })
 
       });
-      
+
 
     } else {
       this.setState({
         counter: 0
       })
     }
-    
-    fetch('http://localhost:5000/getData', {
-      method: 'POST',
-      body: JSON.stringify(),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => res.json())
-      .then(samplePosition => {
-        if (samplePosition.isOK) {
-          this.setState({
-            samplePosition: samplePosition.doc
 
-
-          })
-        } else {
-          console.dir(samplePosition.error)
-        }
-
-        console.log('bbb')
-
-
-
-      }).catch(err => {
-        console.error(err)
-      })
   }
 
   deleteData() {
