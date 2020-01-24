@@ -68,6 +68,8 @@ const userSampleSchema = new Schema({
     time: String
 });
 
+
+
 app.post('/addData', (req, res) => {
     console.log('ben')
     let name = req.body['user'];
@@ -106,6 +108,9 @@ app.post('/addData', (req, res) => {
 });
 
 
+
+
+
 app.post('/getData', (req, res) => {
 
     try {
@@ -130,6 +135,10 @@ app.post('/getData', (req, res) => {
 
 
 })
+
+
+
+
 
 app.post('/deleteData', (req, res) => {
 

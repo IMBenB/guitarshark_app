@@ -161,6 +161,10 @@ class App extends Component {
     console.log(this.state.canSample)
   }
 
+
+  
+
+  
   counterAndLocation = (e) => {
 
     if (this.state.canSample) {
@@ -180,19 +184,26 @@ class App extends Component {
         console.log(`lat: ${this.state.sampleLocation.latitude}`)
         console.log(`lng: ${this.state.sampleLocation.longitude}`)
 
-      });
-      let sampleDate = new Date();
+        
 
-      
+        let sampleDate = new Date();
+
+      //send the original state before update new data
+     
       let data = {
         user: this.state.user,
         latitude: this.state.sampleLocation.latitude,
         longitude: this.state.sampleLocation.longitude,
         date: sampleDate.toLocaleDateString(),
-        time: sampleDate.toLocaleTimeString()
+        time: sampleDate.toLocaleTimeString(),
+        
       };
+      console.log(`lat data: ${this.state.sampleLocation.latitude}`)
+      console.log(`lng data: ${this.state.sampleLocation.longitude}`)
+
 
       fetch('http://localhost:5000/addData', {
+        
         method: 'POST',
         body: JSON.stringify(data),
         headers: {
@@ -211,6 +222,9 @@ class App extends Component {
         }).catch(err => {
           console.error(err)
         })
+
+      });
+      
 
     } else {
       this.setState({
