@@ -50,7 +50,7 @@ app.use(cors());
 //
 
 
-const url = "mongodb+srv://IMBB:ZT4smQXxK6zRu3pW@cluster0-zxnkf.mongodb.net/sharks"
+const url = "mongodb+srv://IMBB:brinbergben@cluster0-zxnkf.mongodb.net/sharks"
 
 const db = mongoose.connection;
 
